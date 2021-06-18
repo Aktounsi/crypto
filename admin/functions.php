@@ -40,4 +40,14 @@
         return false;
 
         }
+
+        function session_en_cours($bdd){
+            date_default_timezone_set("Africa/Algiers"); 
+                $curtime = date("Y-m-d H:i:s");
+                $req = $bdd->prepare('SELECT count(*) AS nb_session FROM session_vote WHERE date_debut < ? AND date_fin > ?');
+                $req->execute(array($curtime,$curtime));
+                $result = $req->fetch();
+                if($result['nb_session']!='0') return true;
+                return false;
+                }
 ?>

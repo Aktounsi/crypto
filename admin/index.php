@@ -16,7 +16,7 @@
                 //$isPasswordCorrect = password_verify($password, $hash);
                 /*$isPasswordCorrect = strcmp($password, $resultat['mdp']);
                 $type_membre = 0;*/
-                if(identify($bdd, $id,$password)) {init_session($id, $password, 100); //100 pour admin
+                if(identify($bdd, $id,$password)) {init_session($id, $password, 100); $_SESSION['active']='0'; //100 pour admin
                                     header('Location: /crypto/admin/'); 
                                     exit;}
                else{
@@ -27,8 +27,8 @@
         }else{  include('notyet.php'); }
      }else{
 
-        if(is_session_valide($bdd)!='100'){ header('Location: /crypto/'); exit;}
-        else{ include ('included.php'); include('contentAdmin.php'); exit;}
+        if(is_session_valide($bdd)!='100'){  header('Location: /crypto/'); exit;}
+        else{ $_SESSION['active']='0'; include ('included.php'); include('contentAdmin.php'); exit;}
         include('notyet.php');
 
      }

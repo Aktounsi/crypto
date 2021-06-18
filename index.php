@@ -35,9 +35,11 @@
         }else{  include('notyet.php'); }
      }else{
 
-        if(is_session_valide($bdd)=='1'){ include ('included.php');  include('contentVotant.php'); exit;}
-        if(is_session_valide($bdd)=='2'){ include ('included.php'); include('contentSignataire.php'); exit;}
-        if(is_session_valide($bdd)=='3'){ include ('included.php'); include('contentDecompteur.php'); exit;}
+        if(is_session_valide($bdd)=='1'){ if(a_le_droit_de_voter($bdd,$_SESSION['id']) &&  (session_en_cours($bdd))){  include ('contentVotant.php');}
+                                                      elseif(!a_le_droit_de_voter($bdd,$_SESSION['id'])){include ('included.php'); include ('VousNAvezPasLeDroit.php');}
+                                                      else{ include ('included.php'); include ('PasDeSessionEnCours.php');} exit;}
+        if(is_session_valide($bdd)=='2'){ include ('included.php'); include ('contentSignataire.php');  exit;}
+        if(is_session_valide($bdd)=='3'){ include ('included.php'); if(session_en_cours($bdd)){ include ('sessionEnCours.php'); }else{ include ('contentDecompteur.php'); } exit;}
         include('notyet.php');
      }
 ?>
