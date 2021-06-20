@@ -81,4 +81,47 @@
                 if($result['nb_session']!='0') return true;
                 return false;
                 }
+
+       function vote_fini($bdd){
+            date_default_timezone_set("Africa/Algiers"); 
+                $curtime = date("Y-m-d H:i:s");
+                $req = $bdd->query('SELECT max(date_fin) AS date_fin_dernier_vote FROM session_vote');
+                $result = $req->fetch();
+                return ($result['date_fin_dernier_vote'] < $curtime);
+                } 
+
+      function clef_deja_partage($bdd,$id_decompteur){
+                $req = $bdd->prepare('SELECT partie_secret FROM carte_decompteur WHERE ID_decompteur = ?');
+                $req->execute(array($id_decompteur));
+                $result = $req->fetch();
+                return (!preg_match('#^$#',$result['partie_secret']));
+                } 
+    function secret_construit($bdd){
+                $req = $bdd->query('SELECT cle_dechiffrement FROM session_vote WHERE ID_session IN (SELECT max(ID_session) FROM session_vote )');
+                $result = $req->fetch();
+                return (!preg_match('#^$#',$result['cle_dechiffrement']));
+                }   
+   function date_delib_arrive($bdd){
+                date_default_timezone_set("Africa/Algiers");
+                $curtime = date("Y-m-d H:i:s");
+                $req = $bdd->query('SELECT date_delib FROM session_vote WHERE ID_session IN (SELECT max(ID_session) FROM session_vote )');
+                $result = $req->fetch();
+                return ($result['date_delib'] < $curtime);
+                }    
+    function dernier_decompteur_qui_partage($bdd){
+                $req = $bdd->query('SELECT count(ID_decompteur) AS n FROM carte_decompteur WHERE partie_secret=\'\' ');
+                $result = $req->fetch();
+                return ($result['n']==0);
+                }  
+    function select_vinqueur($bdd){
+                $req = $bdd->query('SELECT choix, max(nb) AS n FROM ( SELECT choix, count(choix) AS nb FROM votes GROUP BY choix ) AS result');
+                $result = $req->fetch();
+                $reqinfos = $bdd->prepare('SELECT nom, prenom FROM condidat WHERE ID_condidat = ?');
+                $reqinfos->execute(array($result['choix']));
+                $resultInfos = $reqinfos->fetch();
+                return ($result['choix'].'<br>'.$resultInfos['nom'].' '.$resultInfos['prenom'].' <br><br> nombres de voix : '.$result['n']);
+                }                                
+                                   
+                
+                
 ?>

@@ -25,7 +25,7 @@
             {
             ?>
 
-<a class="card candidat"  href="candidats/vote.php">
+<a class="card candidat"  href="candidats/vote.php?id_candidat=<?php   echo  $donnees['ID_condidat'];   ?>">
       <div class="card-image grid-item" ><img src="images/candidat.jpg" alt=""></div>
       <div class="card-text">
         

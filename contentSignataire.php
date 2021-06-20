@@ -1,4 +1,4 @@
-<?php defined('_DEFVAR') or exit('Restricted Access');  ?>
+<?php defined('_DEFVAR') or exit('Restricted Access');  include ('included.php'); ?>
 
 <div class='ripple-background centered'>
                 <div class='circle xxlarge shade1 '></div>
@@ -18,5 +18,7 @@
     </div>
 </div>
 </div>
+
+<script src="nbNotif.js"></script>
 </body>
 </html>

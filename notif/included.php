@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="/crypto/style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -16,28 +16,8 @@
     <link rel="stylesheet" href="file:///C:/wamp64/www/PFE/sidebar/sweetalert/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <style>
-	progress {
-  border-radius: 7px; 
-  width: 80%;
-  height: 22px;
-  margin-left: 10%;
-  box-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.2 );
-}
-progress::-webkit-progress-bar {
-  background-color: white;
-  border-radius: 7px;
-}
-progress::-webkit-progress-value {
-  background-color: green;
-  border-radius: 7px;
-  box-shadow: 1px 1px 5px 3px rgba( 150, 255, 150, 0.8 );
-}
-progress::-moz-progress-bar {
-  /* style rules */
-}
-
-.details{   margin-left:40px;
+	<style>
+	.details{   margin-left:40px;
 							padding:10px;
 		height: 40px;
     background: #00520e;
@@ -78,8 +58,13 @@ progress::-moz-progress-bar {
 		background: #3f7e3f;
 		}
 
+	
+
+
+
+
 	</style>
-	<title>Vote électronique</title>
+    <title>Vote électronique</title>
     </head>
     <body>
     <div id="c1" class="wrapper">      
@@ -96,7 +81,7 @@ progress::-moz-progress-bar {
                 <div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="notif/">Notification
+						<a class="nav-link" href="/crypto/notif/">Notification
 							<span id="spanNotif" 
 								style="	background: rgba(255, 255, 255, 0.007); padding:3px;padding-right:5px;padding-left:5px; border-radius: 4px; color:white; font-size: 9px;">
 							</span>

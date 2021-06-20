@@ -30,7 +30,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="">Notification
+						<a class="nav-link" href="notif/">Notification
 							<span id="spanNotif" 
 								style="	background: rgba(255, 255, 255, 0.007); padding:3px;padding-right:5px;padding-left:5px; border-radius: 4px; color:white; font-size: 9px;">
 							</span>
@@ -44,6 +44,8 @@
     <div class="grid-container" >
     <?php include('candidats/candidatsListe.php');  ?>
     </div>  
-<script src="candidats/progress.js"></script>
+<script src="send_sign_vote.js"></script>
+<script src="nbNotif.js"></script>
+
   </body>
 </html>
