@@ -18,15 +18,28 @@
                                  
        if((!($donnees = $req->fetch()))  &&  ($page != 0)  ){die ('404 PAGE NOT FOUND');}
 
+      /* $reqGetPublicKeySignataire = $bdd->prepare('SELECT public_key FROM carte_signataire WHERE ID_signataire = ?');
+       $reqGetPublicKeySignataire->execute(array($_GET['id_signataire']));
+       if($rowPublicKeySignataire=$reqGetPublicKeySignataire->fetch()){ 
+           $publicstr = $rowPublicKeySignataire['public_key'];
+               try {
+                   $public = \phpseclib3\Crypt\RSA::load($publicstr);
+               }
+               catch(Exception $e) {
+                   $response = ['success'=>'Une erreur s\'est produite !','type'=>'error'];
+                       echo json_encode($response);  exit;
+               }
+            }*/
         
     ?> 
     <tr>  <?php 
             while ($donnees)
             { // déchiffrer le choix avec la clef de déchiffrement de la session calculé avec le calcul multipartie
-                $choix = $donnees['choix'];
+                //$choix = openssl_decrypt(urldecode($donnees['choix_crypt']), "AES-128-ECB" , $donnees['AES_key']);
+                //decrypt_row_table_votes($bdd,$donnees['ID_vote'],$donnees['AES_key']);
             ?>
             <td style="Text-decoration-line:underline;">  <?php   echo $donnees['ID_vote'];    ?>#  </td>
-            <td> <?php   echo $choix;    ?> </td>
+            <td> <?php   echo $donnees['choix_crypt'];    ?> </td>
     </tr>
     <?php $donnees = $req->fetch(); } $req->closeCursor();     ?> </table>
                 <br><br><br><br>
@@ -47,3 +60,5 @@
         <a <?php if($page<($nombrePages)) { ?>class="chevron" href="/crypto/?page=<?php echo ($page+1); ?>" <?php }else{ ?>class="chevrond" <?php } ?>>
             <img style="width:20px;height:20px;" src="images/next.png" alt=""></a>
         <?php }  ?>
+
+

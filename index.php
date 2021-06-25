@@ -35,11 +35,12 @@
         }else{  include('notyet.php'); }
      }else{
 
-        if(is_session_valide($bdd)=='1'){ if(a_le_droit_de_voter($bdd,$_SESSION['id']) &&  (session_en_cours($bdd))){  include ('contentVotant.php');}
-                                                      elseif( (session_en_cours($bdd))  &&  (!a_le_droit_de_voter($bdd,$_SESSION['id'])) ){include ('included.php'); include ('VousNAvezPasLeDroit.php');}
-                                                      else{ include ('included.php'); include ('PasDeSessionEnCours.php');} exit;}
-        if(is_session_valide($bdd)=='2'){  include ('contentSignataire.php');  exit;}
-        if(is_session_valide($bdd)=='3'){  if(session_en_cours($bdd)){ include ('sessionEnCours.php'); }else{ include ('contentDecompteur.php'); } exit;}
+        if(is_session_valide($bdd)=='1'){ if(a_le_droit_de_voter($bdd,$_SESSION['id']) &&  (session_en_cours($bdd))  &&  (isset($_SESSION['private_key']))  ){  include ('contentVotant.php');}
+                                          elseif( (session_en_cours($bdd))  &&  (a_le_droit_de_voter($bdd,$_SESSION['id'])) &&  (!isset($_SESSION['private_key']))  ){include ('included.php'); include ('enterPrivateKey.php');}
+                                          elseif( (session_en_cours($bdd))  &&  (!a_le_droit_de_voter($bdd,$_SESSION['id'])) ){include ('included.php'); include ('VousNAvezPasLeDroit.php');}
+                                          else{ include ('included.php'); include ('PasDeSessionEnCours.php');} exit;}
+        if(is_session_valide($bdd)=='2'){ if(isset($_SESSION['private_key'])){  include ('contentSignataire.php'); }else{ include ('included.php'); include ('enterPrivateKey.php'); }  exit;}
+        if(is_session_valide($bdd)=='3'){ /*if(isset($_SESSION['private_key'])){*/ if(session_en_cours($bdd)){ include ('sessionEnCours.php'); }else{ include ('contentDecompteur.php'); } /*}else{include ('included.php'); include ('enterPrivateKey.php');} */ exit;}
         include('notyet.php');
      }
 ?>

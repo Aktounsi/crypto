@@ -25,13 +25,29 @@
         <p> 
 
         <?php echo '<strong style="color:black;font-weight:bold;">#ID_signataire : ' . $donnees['emetteur'] . '</strong>'; ?> <br>    
-        <?php echo '<strong style="color:black;font-weight:bold;">vote signé : ' . $donnees['contenu'] . '</strong>'; ?> 
-            
+        <?php echo '<strong style="color:black;font-weight:bold;">vote signé : ' . $donnees['contenu'] . '</strong>'; ?>   <br>
         </p>
+        <div id="ajouter" class="tab-pane active">
+				<form id="form" method="POST" action="verifySignature.php?id_signataire=<?php echo $donnees['emetteur']; ?>">
+				<div class="form-group">
+					
+					<div class="md-form mx-5 my-5">
+                    <label  for="voteEnClair">Entrez le vote que vous avez choisi afin de vérifier la signature :</label>
+                    <input type="text" id="voteEnClair" name="voteEnClair" class="form-control" > <br> <br>
+                    <label  for="voteEnClair">La signature que vous avez reçu :</label>
+                    <textarea id="signature" name="signature" class="form-control"><?php echo $donnees['contenu']; ?></textarea>
+                    </div>
+                    
+					<br>
+					<br>		
+					<button class="btn btn-success">Vérifier</button>
+				</div>
+				</form>
+				</div>
        <br>
         <p style="margin-left:25%;"> 
             
-            <a href="valider_vote.php?choix=<?php echo $donnees['contenu']; ?>&code_user=<?php echo $donnees['emetteur']; ?>&page=<?php echo $page; ?>" class="link"> <button class="btn btn-success"> Valider</button></a> 
+            <a href="valider_vote.php?code_user=<?php echo $donnees['emetteur']; ?>" class="link"> <button class="btn btn-success"> Valider</button></a> 
         
         </li>
         <?php $donnees = $req->fetch(); } $req->closeCursor();     ?>

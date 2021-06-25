@@ -20,6 +20,7 @@ if( isset($_GET['id_candidat']) ){
     if($data=$response->fetch()) $recep = $data['ID_signataire'];
     $reqAddSession = $bdd->prepare('INSERT INTO msg (ID_msg,emetteur,recepteur,contenu) VALUES (?,?,?,?)');
     $reqAddSession->execute(array($ID_msg,$_SESSION['id'],$recep,$contenu));
+    $_SESSION['vote'] = $contenu;
 
     $response = ['success'=>'Votre vote a été envoyé avec succès au signataire, une fois signé vous receverez une notification afin de valider votre choix!','type'=>'success'];
     echo json_encode($response);exit; 

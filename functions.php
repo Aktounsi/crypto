@@ -1,4 +1,4 @@
-<?php defined('_DEFVAR') or exit('Restricted Access');
+<?php defined('_DEFVAR') or exit('Restricted Access'); 
     function validate_data($donnees){
         $donnees = trim($donnees);
         $donnees = stripslashes($donnees);
@@ -109,19 +109,55 @@
                 return ($result['date_delib'] < $curtime);
                 }    
     function dernier_decompteur_qui_partage($bdd){
-                $req = $bdd->query('SELECT count(ID_decompteur) AS n FROM carte_decompteur WHERE partie_secret=\'\' ');
+                $req = $bdd->query('SELECT count(ID_decompteur) AS n FROM carte_decompteur WHERE partie_secret=\'\' OR partie_secret IS NULL ');
                 $result = $req->fetch();
                 return ($result['n']==0);
                 }  
-    function select_vinqueur($bdd){
-                $req = $bdd->query('SELECT choix, max(nb) AS n FROM ( SELECT choix, count(choix) AS nb FROM votes GROUP BY choix ) AS result');
-                $result = $req->fetch();
-                $reqinfos = $bdd->prepare('SELECT nom, prenom FROM condidat WHERE ID_condidat = ?');
-                $reqinfos->execute(array($result['choix']));
+    function select_vinqueur($bdd){ $max = 0 ; 
+                $req = $bdd->query('SELECT choix_crypt, count(choix_crypt) AS nb FROM votes GROUP BY choix_crypt');
+                while($result = $req->fetch()){
+                        if($max < $result['nb']) {$max = $result['nb']; $vainqueur = $result['choix_crypt'];}
+                }
+                
+                if($max > 0){
+                $reqinfos = $bdd->prepare('SELECT ID_condidat, nom, prenom FROM condidat WHERE ID_condidat = ?');
+                $reqinfos->execute(array($vainqueur));
                 $resultInfos = $reqinfos->fetch();
-                return ($result['choix'].'<br>'.$resultInfos['nom'].' '.$resultInfos['prenom'].' <br><br> nombres de voix : '.$result['n']);
-                }                                
-                                   
+                return ($resultInfos['ID_condidat'].'<br>'.$resultInfos['nom'].' '.$resultInfos['prenom'].' <br><br> nombres de voix : '.$max);}
+                return 'Il n\'y a pas de vainqueur';
+                } 
+    function get_rsa_private_key($bdd){
+                $req = $bdd->query('SELECT * FROM session_vote ORDER BY ID_session DESC ');
+                if($result = $req->fetch() )return $result['cle_dechiffrement']; 
+                return false;
+    }             
+
+    function decrypt_aes_key($bdd,$rsa_private_key,$aes_crypted_key){
+        
+        $private_rsa_str = $rsa_private_key;
+        try{
+            $private_rsa =  \phpseclib3\Crypt\RSA::load($private_rsa_str);
+        }catch(Exception $e){
+            return false;
+        }
+        
+        return $private_rsa->decrypt($aes_crypted_key);
+                   
+                    } 
+
+    function decrypt_row_table_votes($bdd,$id_vote,$aes_key){
+
+                    $reqGetRow = $bdd->prepare('SELECT * FROM votes WHERE ID_vote = ?');
+                    $reqGetRow->execute(array($id_vote));
+                    $row = $reqGetRow->fetch();
+                    $signatureClair = openssl_decrypt($row['signature_vote'], "AES-128-ECB" , $aes_key);
+                    $choixClair = openssl_decrypt($row['choix_crypt'], "AES-128-ECB" , $aes_key);
+                
+                    $reqUpdateRow = $bdd->prepare('UPDATE votes SET signature_vote = ?, choix_crypt = ?, AES_key = ? WHERE ID_vote = ?');
+                    $reqUpdateRow->execute(array($signatureClair,$choixClair,$aes_key,$id_vote));
+                    return true;
+                
+                }                               
                 
                 
 ?>

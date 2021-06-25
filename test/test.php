@@ -3,7 +3,7 @@
         //include('validate_data_function.php');
         include('../DBconnection.php');
         include('../functions.php');
-        if (dernier_decompteur_qui_partage($bdd)) echo 'true';
+        if (session_en_cours($bdd)) echo 'true';
         else echo 'false';
 
         ?>

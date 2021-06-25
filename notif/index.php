@@ -21,9 +21,10 @@ else{header('Location: /crypto/');}
 
 ?>
 
-
+<script src="../envoyer.js"></script>
 <script src="confirm_action.js"></script>
 <script src="../nbNotif.js"></script>
+
 
     
 </body>
